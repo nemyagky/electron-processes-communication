@@ -1,14 +1,10 @@
 import React, {useEffect} from 'react';
 import {MovableBox} from "./components/MovableBox/movable-box";
 import {ipcRenderer} from "electron";
-import { Subject } from 'rxjs';
+import {scrollTouchBegin, scrollTouchEnd, wheelEvent} from "./services/event-subscriber.service";
 
 
 export const App: React.FC = () => {
-
-    const scrollTouchBegin = new Subject<boolean>();
-    const scrollTouchEnd = new Subject<boolean>();
-    const wheelEvent = new Subject<WheelEvent>();
 
     useEffect(() => {
         ipcRenderer.on("scroll-touch-begin", () => {
@@ -26,10 +22,6 @@ export const App: React.FC = () => {
 
 
     return (
-        <MovableBox
-            scrollTouchBegin={scrollTouchBegin}
-            scrollTouchEnd={scrollTouchEnd}
-            wheelEvent={wheelEvent}
-        />
+        <MovableBox/>
     );
 }

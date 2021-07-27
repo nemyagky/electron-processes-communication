@@ -1,49 +1,44 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {Subject} from "rxjs";
+import {scrollTouchBegin, scrollTouchEnd, wheelEvent} from "../../services/event-subscriber.service";
 
-interface MovableBoxProps {
-    scrollTouchBegin: Subject<boolean>;
-    scrollTouchEnd: Subject<boolean>;
-    wheelEvent: Subject<WheelEvent>;
-}
 
 const defaultX = window.innerWidth/2 - 50;
 const defaultY = window.innerHeight/2 - 50;
 
-export const MovableBox: React.FC<MovableBoxProps> = (props: MovableBoxProps) => {
+export const MovableBox: React.FC = () => {
 
     const [positionX, setPositionX] = useState(defaultX);
     const [positionY, setPositionY] = useState(defaultY);
     const [isWheeling, setIsWheeling] = useState(false);
 
     useEffect(() => {
-        props.scrollTouchBegin.subscribe(() => {
+        scrollTouchBegin.subscribe(() => {
             setIsWheeling(true);
         });
 
-        props.scrollTouchEnd.subscribe(() => {
+        scrollTouchEnd.subscribe(() => {
             setPositionX(defaultX);
             setPositionY(defaultY);
             setIsWheeling(false);
         });
 
         return () => {
-            props.scrollTouchBegin.unsubscribe();
-            props.scrollTouchEnd.unsubscribe();
+            scrollTouchBegin.unsubscribe();
+            scrollTouchEnd.unsubscribe();
         }
     }, []);
 
     useEffect(() => {
-        props.wheelEvent.subscribe((e) => {
+        wheelEvent.subscribe((e) => {
             if (!isWheeling) return;
 
-            setPositionX((x) => calcPositionX(x - e.deltaX));
-            setPositionY((y) => calcPositionY(y - e.deltaY));
+            setPositionX((x) => calcPositionX(x - e.deltaX * 1.5));
+            setPositionY((y) => calcPositionY(y - e.deltaY * 1.5));
         });
 
         return () => {
-            props.wheelEvent.observers.forEach((obs) => {
+            wheelEvent.observers.forEach((obs) => {
                 obs.complete();
             })
         }
