@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {scrollTouchBegin, scrollTouchEnd, wheelEvent} from "../../services/event-subscriber.service";
+import {scrollTouchBeginEvent, scrollTouchEndEvent, wheelEvent} from "../../services/event-subscriber.service";
 
 
 const defaultX = window.innerWidth/2 - 50;
@@ -13,19 +13,19 @@ export const MovableBox: React.FC = () => {
     const [isWheeling, setIsWheeling] = useState(false);
 
     useEffect(() => {
-        scrollTouchBegin.subscribe(() => {
+        scrollTouchBeginEvent.subscribe(() => {
             setIsWheeling(true);
         });
 
-        scrollTouchEnd.subscribe(() => {
+        scrollTouchEndEvent.subscribe(() => {
             setPositionX(defaultX);
             setPositionY(defaultY);
             setIsWheeling(false);
         });
 
         return () => {
-            scrollTouchBegin.unsubscribe();
-            scrollTouchEnd.unsubscribe();
+            scrollTouchBeginEvent.unsubscribe();
+            scrollTouchEndEvent.unsubscribe();
         }
     }, []);
 

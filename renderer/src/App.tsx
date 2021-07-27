@@ -1,18 +1,18 @@
 import React, {useEffect} from 'react';
 import {MovableBox} from "./components/MovableBox/movable-box";
 import {ipcRenderer} from "electron";
-import {scrollTouchBegin, scrollTouchEnd, wheelEvent} from "./services/event-subscriber.service";
+import {scrollTouchBeginEvent, scrollTouchEndEvent, wheelEvent} from "./services/event-subscriber.service";
 
 
 export const App: React.FC = () => {
 
     useEffect(() => {
         ipcRenderer.on("scroll-touch-begin", () => {
-            scrollTouchBegin.next(true);
+            scrollTouchBeginEvent.next(true);
         })
 
         ipcRenderer.on("scroll-touch-end", () => {
-            scrollTouchEnd.next(true);
+            scrollTouchEndEvent.next(true);
         })
 
         window.addEventListener('wheel', (e) => {
