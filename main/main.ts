@@ -24,6 +24,7 @@ const createWindow = (): void => {
 
   mainWindow.removeMenu();
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on("scroll-touch-begin", () => {
     mainWindow.webContents.send('scroll-touch-begin');

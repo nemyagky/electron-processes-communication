@@ -32,7 +32,7 @@ export const MovableBox: React.FC<MovableBoxProps> = (props: MovableBoxProps) =>
             props.scrollTouchBegin.unsubscribe();
             props.scrollTouchEnd.unsubscribe();
         }
-    });
+    }, []);
 
     useEffect(() => {
         props.wheelEvent.subscribe((e) => {
